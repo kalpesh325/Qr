@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>QR Scanner Table</title>
+    <script src="https://unpkg.com/html5-qrcode"></script>
+    <style>
+        body {
+            font-family: Arial;
+            text-align: center;
+            background: #f4f4f4;
+        }
+        #reader {
+            width: 300px;
+            margin: auto;
+        }
+        table {
+            margin: 20px auto;
+            border-collapse: collapse;
+            width: 80%;
+            background: white;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 10px;
+        }
+        th {
+            background: #333;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+<h2>QR Code Scanner</h2>
+
+<div id="reader"></div>
+
+<h3>Scanned Data</h3>
+
+<table>
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Item Name</th>
+            <th>Price</th>
+            <th>Purchase Date</th>
+            <th>Disposal Date</th>
+            <th>Room No</th>
+            <th>Owner</th>
+        </tr>
+    </thead>
+    <tbody id="tableBody"></tbody>
+</table>
+
+<script>
+function onScanSuccess(decodedText) {
+    console.log("QR Data:", decodedText);
+
+    let lines = decodedText.split("\n");
+
+    let data = {
+        id: lines[0],
+        item: lines[1]?.replace("ITEM NAME: ", ""),
+        price: lines[2]?.replace("PRICE: ", ""),
+        purchase: lines[3]?.replace("PURCHAGE DATE: ", ""),
+        disposal: lines[4]?.replace("DISPOSSAL DATE: ", ""),
+        room: lines[5]?.replace("ROOM NO.: ", ""),
+        owner: lines[6]?.replace("OWENER: ", "")
+    };
+
+    let row = `
+        <tr>
+            <td>${data.id}</td>
+            <td>${data.item}</td>
+            <td>${data.price}</td>
+            <td>${data.purchase}</td>
+            <td>${data.disposal}</td>
+            <td>${data.room}</td>
+            <td>${data.owner}</td>
+        </tr>
+    `;
+
+    document.getElementById("tableBody").innerHTML += row;
+}
+
+let scanner = new Html5QrcodeScanner("reader", {
+    fps: 10,
+    qrbox: 250
+});
+
+scanner.render(onScanSuccess);
+</script>
+
+</body>
+</html>
