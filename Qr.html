@@ -3,7 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <title>QR Scanner Table</title>
+
+    <!-- QR Scanner Library -->
     <script src="https://unpkg.com/html5-qrcode"></script>
+
     <style>
         body {
             font-family: Arial;
@@ -27,6 +30,12 @@
         th {
             background: #333;
             color: white;
+        }
+        button {
+            padding: 10px 20px;
+            margin-top: 15px;
+            font-size: 16px;
+            cursor: pointer;
         }
     </style>
 </head>
@@ -53,9 +62,14 @@
     <tbody id="tableBody"></tbody>
 </table>
 
+<!-- Download Button -->
+<button onclick="downloadExcel()">Download Excel</button>
+
 <script>
+
+let allData = []; // 👉 data store
+
 function onScanSuccess(decodedText) {
-    console.log("QR Data:", decodedText);
 
     let lines = decodedText.split("\n");
 
@@ -68,6 +82,14 @@ function onScanSuccess(decodedText) {
         room: lines[5]?.replace("ROOM NO.: ", ""),
         owner: lines[6]?.replace("OWENER: ", "")
     };
+
+    // 👉 duplicate check (optional but useful)
+    if (allData.some(d => d.id === data.id)) {
+        alert("Already scanned!");
+        return;
+    }
+
+    allData.push(data);
 
     let row = `
         <tr>
@@ -84,12 +106,32 @@ function onScanSuccess(decodedText) {
     document.getElementById("tableBody").innerHTML += row;
 }
 
+// 👉 Excel Download Function
+function downloadExcel() {
+
+    let csv = "ID,Item Name,Price,Purchase Date,Disposal Date,Room No,Owner\n";
+
+    allData.forEach(d => {
+        csv += `${d.id},${d.item},${d.price},${d.purchase},${d.disposal},${d.room},${d.owner}\n`;
+    });
+
+    let blob = new Blob([csv], { type: "text/csv" });
+    let url = window.URL.createObjectURL(blob);
+
+    let a = document.createElement("a");
+    a.href = url;
+    a.download = "QR_Data.csv";
+    a.click();
+}
+
+// Scanner Start
 let scanner = new Html5QrcodeScanner("reader", {
     fps: 10,
     qrbox: 250
 });
 
 scanner.render(onScanSuccess);
+
 </script>
 
 </body>
