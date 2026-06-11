@@ -1,0 +1,4 @@
+body{margin:0;background:#f2d39b;font-family:Arial;text-align:center}
+#ui{padding:10px;font-size:24px}
+canvas{border:3px solid #654;background:linear-gradient(#f7d8a0,#d8f0b0)}
+.controls{margin:10px}button{font-size:28px;padding:10px 20px;margin:5px}
