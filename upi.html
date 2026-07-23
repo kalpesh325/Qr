@@ -1,21 +1,23 @@
-<!DOCTYPE html>
-<html>
+<!DOCTYPE html><html>
 <head>
     <meta charset="UTF-8">
-    <title>POST Request</title>
+    <title>JSON POST Request</title>
 </head>
-<body>
-
-<button onclick="sendRequest()">Send POST Request</button>
+<body><button onclick="sendRequest()">Send POST Request</button>
 
 <script>
 function sendRequest() {
+
     fetch("https://script.google.com/macros/s/AKfycbwkOcvFJqRB78mzw-lXxGjfqLr-rE9wS-NcyFJiTjvZ0INDHFGpqxdhyGUSGTa84wsNJA/exec", {
         method: "POST",
         headers: {
-            "Content-Type": "application/x-www-form-urlencoded"
+            "Content-Type": "application/json"
         },
-        body: "amount=100&upi_id=test@upi&id=123"
+        body: JSON.stringify({
+            amount: 100,
+            upi_id: "test@upi",
+            id: "123"
+        })
     })
     .then(response => response.text())
     .then(data => {
@@ -24,8 +26,7 @@ function sendRequest() {
     .catch(error => {
         alert("Error: " + error);
     });
-}
-</script>
 
-</body>
+}
+</script></body>
 </html>
