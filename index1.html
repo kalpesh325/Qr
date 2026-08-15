@@ -1,87 +1,54 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>Patrika API Test</title>
-
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            max-width: 500px;
-            margin: 50px auto;
-            padding: 20px;
-        }
-
-        input, button {
-            width: 100%;
-            padding: 12px;
-            margin-top: 10px;
-            box-sizing: border-box;
-        }
-
-        button {
-            cursor: pointer;
-        }
-
-        #result {
-            margin-top: 20px;
-            padding: 15px;
-            background: #f2f2f2;
-            word-break: break-word;
-        }
-    </style>
 </head>
 
 <body>
 
     <h2>Patrika API Test</h2>
 
-    <input
-        type="text"
-        id="name"
-        placeholder="Enter Name"
-    >
+    <input id="name" placeholder="Name">
+    <br><br>
 
-    <input
-        type="text"
-        id="mobile"
-        placeholder="Enter Mobile"
-    >
+    <input id="mobile" placeholder="Mobile">
+    <br><br>
 
-    <button onclick="sendData()">
-        Send Data
-    </button>
+    <button onclick="sendData()">Send</button>
 
-    <div id="result">
-        Waiting...
-    </div>
+    <p id="result">Waiting...</p>
 
     <script>
-function sendData() {
+        function sendData() {
 
-    fetch("api.php", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-            name: "Kalpesh",
-            mobile: "1234567890"
-        })
-    })
-    .then(response => response.text())
-    .then(data => {
-        document.getElementById("result").innerText = data;
-    })
-    .catch(error => {
-        document.getElementById("result").innerText =
-            "ERROR: " + error;
-    });
-}
-</script>
+            fetch("api.php", {
+                method: "POST",
 
-<button onclick="sendData()">Test API</button>
+                headers: {
+                    "Content-Type": "application/json"
+                },
 
-<pre id="result">Waiting...</pre>
+                body: JSON.stringify({
+                    name: document.getElementById("name").value,
+                    mobile: document.getElementById("mobile").value
+                })
+            })
+
+            .then(response => response.text())
+
+            .then(data => {
+                document.getElementById("result").innerText =
+                    data;
+            })
+
+            .catch(error => {
+                document.getElementById("result").innerText =
+                    "Error: " + error.message;
+            });
+        }
+    </script>
+
+</body>
+</html>
