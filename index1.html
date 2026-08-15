@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patrika API Test</title>
+</head>
+<body>
+
+    <h2>Patrika API Test</h2>
+
+    <input type="text" id="name" placeholder="Name">
+    <br><br>
+
+    <input type="text" id="mobile" placeholder="Mobile">
+    <br><br>
+
+    <button onclick="sendData()">Send Data</button>
+
+    <p id="status">Ready...</p>
+
+    <script>
+        function sendData() {
+
+            const name = document.getElementById("name").value;
+            const mobile = document.getElementById("mobile").value;
+
+            document.getElementById("status").innerText =
+                "Sending...";
+
+            fetch("https://patrika.xo.je/api.php", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    name: name,
+                    mobile: mobile
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+
+                console.log(data);
+
+                document.getElementById("status").innerText =
+                    "Server Response: " + JSON.stringify(data);
+
+            })
+            .catch(error => {
+
+                console.error(error);
+
+                document.getElementById("status").innerText =
+                    "Request Failed: " + error.message;
+            });
+        }
+    </script>
+
+</body>
+</html>
