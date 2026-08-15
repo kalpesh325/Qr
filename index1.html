@@ -59,61 +59,29 @@
     </div>
 
     <script>
+function sendData() {
 
-        function sendData() {
+    fetch("api.php", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            name: "Kalpesh",
+            mobile: "1234567890"
+        })
+    })
+    .then(response => response.text())
+    .then(data => {
+        document.getElementById("result").innerText = data;
+    })
+    .catch(error => {
+        document.getElementById("result").innerText =
+            "ERROR: " + error;
+    });
+}
+</script>
 
-            const name =
-                document.getElementById("name").value;
+<button onclick="sendData()">Test API</button>
 
-            const mobile =
-                document.getElementById("mobile").value;
-
-            document.getElementById("result").innerText =
-                "Sending request...";
-
-            fetch("api.php", {
-                method: "POST",
-
-                headers: {
-                    "Content-Type": "application/json"
-                },
-
-                body: JSON.stringify({
-                    name: name,
-                    mobile: mobile
-                })
-            })
-
-            .then(response => {
-
-                if (!response.ok) {
-                    throw new Error(
-                        "HTTP Error: " + response.status
-                    );
-                }
-
-                return response.json();
-            })
-
-            .then(data => {
-
-                document.getElementById("result").innerText =
-                    "SUCCESS\n\n" +
-                    JSON.stringify(data, null, 2);
-
-            })
-
-            .catch(error => {
-
-                document.getElementById("result").innerText =
-                    "FAILED\n\n" +
-                    error.message;
-
-            });
-
-        }
-
-    </script>
-
-</body>
-</html>
+<pre id="result">Waiting...</pre>
