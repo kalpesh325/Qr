@@ -8,47 +8,41 @@
 
 <body>
 
-    <h2>Patrika API Test</h2>
+<h2>Patrika API Test</h2>
 
-    <input id="name" placeholder="Name">
-    <br><br>
+<input id="name" placeholder="Name">
+<br><br>
 
-    <input id="mobile" placeholder="Mobile">
-    <br><br>
+<input id="mobile" placeholder="Mobile">
+<br><br>
 
-    <button onclick="sendData()">Send</button>
+<button onclick="sendData()">Send</button>
 
-    <p id="result">Waiting...</p>
+<pre id="result">Waiting...</pre>
 
-    <script>
-        function sendData() {
+<script>
+function sendData() {
 
-            fetch("api.php", {
-                method: "POST",
+    const name = document.getElementById("name").value;
+    const mobile = document.getElementById("mobile").value;
 
-                headers: {
-                    "Content-Type": "application/json"
-                },
+    const url =
+        "api.php?name=" +
+        encodeURIComponent(name) +
+        "&mobile=" +
+        encodeURIComponent(mobile);
 
-                body: JSON.stringify({
-                    name: document.getElementById("name").value,
-                    mobile: document.getElementById("mobile").value
-                })
-            })
-
-            .then(response => response.text())
-
-            .then(data => {
-                document.getElementById("result").innerText =
-                    data;
-            })
-
-            .catch(error => {
-                document.getElementById("result").innerText =
-                    "Error: " + error.message;
-            });
-        }
-    </script>
+    fetch(url)
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById("result").textContent = data;
+        })
+        .catch(error => {
+            document.getElementById("result").textContent =
+                "Error: " + error.message;
+        });
+}
+</script>
 
 </body>
 </html>
